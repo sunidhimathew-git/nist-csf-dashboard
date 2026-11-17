@@ -127,17 +127,13 @@ try:
         st.subheader("Critical & High-Risk Gaps (Rated 0 or 1)")
         critical_gaps = simulated_df[simulated_df["Rating"] <= 1]
 
-        if critical_gaps.empty:
-            st.success("🎉 All critical gaps have been remediated! Every control is rated 2 or higher.")
+        if not critical_gaps.empty:
+            for idx, row in critical_gaps.iterrows():
+                with st.expander(f"🔴 [{row['Subcategory ID']}] {row['Subcategory Description']} — Rating: {row['Rating']}", expanded=True):
+                    st.write(f"**Audit Evidence:** {row['Evidence & Notes']}")
         else:
-            for _, row in critical_gaps.iterrows():
-                control_id = str(row["Subcategory ID"])
-                description = str(row["Subcategory Description"])
-                rating = int(row["Rating"])
-                evidence = str(row["Evidence & Notes"]) if pd.notna(row["Evidence & Notes"]) else "No evidence provided."
-                label = f"🔴 [{control_id}] {description} — Rating: {rating}"
-                with st.expander(label, expanded=False):
-                    st.write("**Audit Evidence:**", evidence)
+            st.success("🎉 All critical gaps have been remediated! Every control is rated 2 or higher.")
 
 except Exception as e:
-    st.exception(e)
+    st.warning("👋 Welcome! Please upload your completed `nist_assessment.xlsx` file using the sidebar on the left (or ensure it is in the app folder).")
+    st.info("Expected Excel sheet name: `Assessment` | Expected columns: `Function`, `Subcategory ID`, `Subcategory Description`, `Rating`, `Evidence & Notes`")
