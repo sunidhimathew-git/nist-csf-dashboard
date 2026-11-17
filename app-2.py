@@ -140,5 +140,4 @@ try:
                     st.write("**Audit Evidence:**", evidence)
 
 except Exception as e:
-    st.warning("👋 Welcome! Please upload your completed `nist_assessment.xlsx` file using the sidebar on the left (or ensure it is in the app folder).")
-    st.info("Expected Excel sheet name: `Assessment` | Expected columns: `Function`, `Subcategory ID`, `Subcategory Description`, `Rating`, `Evidence & Notes`")
+    st.exception(e)
